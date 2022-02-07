@@ -1,20 +1,23 @@
-var Opponent = function (name, target_field, current_field ){
+var Opponent = function (name, opponent_field ){
     this.name = name;
-    this.target_field = target_field;
     this.opponentImage = null;
-    this.current_field = current_field;
+    this.opponent_field = opponent_field;
     
     this.init();
 }
 
 Opponent.prototype.init = function(){
     this.opponentImage = new Image();
-    this.opponentImage.src ='images/scaredGhost.png';
-    this.opponentImage.src ='images/scaredGhost2.png';
+    if(this.name == "gegner1"){
+    this.opponentImage.src ='img/scaredGhost.png';
+    }else if(this.name == "gegner2"){
+    
+    this.opponentImage.src ='img/scaredGhost2.png';
+    }
 }
 
-Opponent.prototype.drawOpponentPosition = function(grid){
-    start_coord  = grid.coordinateFromId( this.target_field.id);
+Opponent.prototype.drawOpponentPosition = function(grid, x){
+    start_coord  = grid.coordinateFromId( this.opponent_field.id);
 		
 	
     let target_width = 0;
@@ -33,7 +36,6 @@ Opponent.prototype.drawOpponentPosition = function(grid){
         target_height = target_width * ratio;
 
     }
-
     target_x += (grid.field_width / 2) - (target_width / 2);
     target_y += (grid.field_height /2) - (target_height /2);
     grid.ctx.beginPath();
@@ -49,26 +51,22 @@ Opponent.prototype.move = function(grid, direction){
 
     switch(direction){
         case MOVE_NORTH:
-            if(this.current_field.neighbors[direction]=== null){
-                console.log("Du kannst nicht nach Norden gehen!");
+            if(this.opponent_field.neighbors[direction]=== null){
                 moved = false;
             }
             break;
         case MOVE_EAST:
-            if(this.current_field.neighbors[direction]=== null){
-                console.log("Du kannst nicht nach Osten gehen!");
-                moved = null;
+            if(this.opponent_field.neighbors[direction]=== null){
+                moved = false;
             }
             break;
         case MOVE_SOUTH:
-            if(this.current_field.neighbors[direction]=== null){
-                console.log("Du kannst nicht nach Süden gehen!");
+            if(this.opponent_field.neighbors[direction]=== null){
                 moved = false;
             }
             break;
         case MOVE_WEST:
-            if(this.current_field.neighbors[direction]=== null){
-                console.log("Du kannst nicht nach Westen gehen!");
+            if(this.opponent_field.neighbors[direction]=== null){
                  moved = false;
             }
             break;
@@ -78,10 +76,13 @@ Opponent.prototype.move = function(grid, direction){
     if(moved){
        
 
-        this.current_field.draw(grid);
+        this.opponent_field.draw(grid);
 
-        this.current_field = this.current_field.neighbors[direction];
+        this.opponent_field = this.opponent_field.neighbors[direction];
 
         this.drawOpponentPosition(grid);
+
+        this.opponent_field.new_id(this, 0, 1);
+      
     }
 }

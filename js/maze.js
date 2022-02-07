@@ -67,23 +67,19 @@ function cereateMaze( grid ) {
 		switch(direction) {
 				case MOVE_NORTH:
 				field_array[current_coord.y][current_coord.x].setNorth( field_array[target_coord.y][target_coord.x] );
-				field_array[target_coord.y][target_coord.x].setSouth( field_array[current_coord.y][current_coord.x] );
 				break;
 				
 				case MOVE_EAST:
 				field_array[current_coord.y][current_coord.x].setEast( field_array[target_coord.y][target_coord.x] );
-				field_array[target_coord.y][target_coord.x].setWest( field_array[current_coord.y][current_coord.x] );
 				break;
 				
 				
 				case MOVE_SOUTH:
 				field_array[current_coord.y][current_coord.x].setSouth( field_array[target_coord.y][target_coord.x] );
-				field_array[target_coord.y][target_coord.x].setNorth( field_array[current_coord.y][current_coord.x] );
 				break;
 				
 				case MOVE_WEST:
 				field_array[current_coord.y][current_coord.x].setWest( field_array[target_coord.y][target_coord.x] );
-				field_array[target_coord.y][target_coord.x].setEast( field_array[current_coord.y][current_coord.x] );
 				break;
 					
 		}
@@ -106,9 +102,9 @@ function cereateMaze( grid ) {
 		
 		visited_fields.push( target_field);
 		stack.push( target_field );
-		//if(this.debug){
+		if(this.debug){
 			console.log( `gehe zu Feld: ${target_field}` );
-		//}
+		}
 		current_field = target_field;
 		
 
@@ -180,6 +176,14 @@ function getRandomField(grid, field_array){
 	
 }
 
+function getField_id( grid, field_array ,id) {
+	let coord = grid.coordinateFromId( id ) ;
+
+	var field = field_array[ coord.y ][ coord.x ];	
+	
+	return field;
+	
+}
 
 
 

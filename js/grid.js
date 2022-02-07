@@ -16,7 +16,7 @@ Grid.prototype.coordinateFromId = function(field_id){
 }
 
 
-Grid.prototype.drawGrid = function(){
+Grid.prototype.drawGrid = function(number_of_fields){
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     this.ctx.fillStyle = '#ff0000';
     this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);

@@ -3,14 +3,15 @@ var Player = function(name, current_field, color){
     this.name = name;
     this.current_field = current_field;
     this.color = color;
-    this.punkte = 0;
     this.playerImage = null;
     this.init();
+    this.item = [];
+    this.life = null;
 }
 
 Player.prototype.init = function(){
     this.playerImage = new Image();
-    this.playerImage.src = 'images/pac1.png';
+    this.playerImage.src = 'img/pac1.png';
 
 }
 
@@ -26,8 +27,6 @@ Player.prototype.drawPlayerPosition = function(grid){
         ratio = this.playerImage.width / this.playerImage.height;
         target_height = (grid.field_height -2) / 2;
         target_width = target_height * ratio;
-       // target_x += (grid.field_width / 2) - (target_width / 2);
-        //target_y += (grid.field_height /2) - (target_height /2);
     }else{
         ratio = this.playerImage.height / this.playerImage.width;
         target_width = (grid.field_width -2) / 2;
@@ -53,25 +52,21 @@ Player.prototype.move = function(grid, direction){
     switch(direction){
         case MOVE_NORTH:
             if(this.current_field.neighbors[direction]=== null){
-                console.log("Du kannst nicht nach Norden gehen!");
                 moved = false;
             }
             break;
         case MOVE_EAST:
             if(this.current_field.neighbors[direction]=== null){
-                console.log("Du kannst nicht nach Osten gehen!");
-                moved = null;
+                moved = false;
             }
             break;
         case MOVE_SOUTH:
             if(this.current_field.neighbors[direction]=== null){
-                console.log("Du kannst nicht nach Süden gehen!");
                 moved = false;
             }
             break;
         case MOVE_WEST:
             if(this.current_field.neighbors[direction]=== null){
-                console.log("Du kannst nicht nach Westen gehen!");
                  moved = false;
             }
             break;
@@ -79,12 +74,29 @@ Player.prototype.move = function(grid, direction){
     } 
 
     if(moved){
-        this.punkte++;
+      
 
         this.current_field.draw(grid);
 
         this.current_field = this.current_field.neighbors[direction];
 
+        if( this.current_field.item ) {
+			
+			let sound = document.createElement( 'audio' );
+			sound.src = 'sounds/waka.wav';
+			sound.preload = true;
+			sound.volume = 1;
+			sound.play();
+			
+			this.item.push( this.current_field.item );
+			this.current_field.item = null;
+		}
+		
+		this.current_field.draw( grid );
+
         this.drawPlayerPosition(grid);
+        this.current_field.all_item(this);
+        this.current_field.new_id(this,1 ,0);
+        
     }
 }
